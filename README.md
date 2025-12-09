@@ -1,2 +1,2 @@
 # QuantumImpulse
-Physix Engine for mobile games
+Physix Engine for small mobile games
