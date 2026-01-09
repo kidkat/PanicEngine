@@ -1,20 +1,44 @@
-namespace PanicEngine.Maths;
-
-public readonly struct FieldBounds
+namespace PanicEngine.Maths
 {
-    public float Left { get; }
-    public float Right { get; }
-    public float Top { get; }
-    public float Bottom { get; }
 
-    public FieldBounds(float left, float right, float top, float bottom)
+    public readonly struct FieldBounds
     {
-        Left = left;
-        Right = right;
-        Top = top;
-        Bottom = bottom;
-    }
+        public float Left { get; }
+        public float Right { get; }
+        public float Top { get; }
+        public float Bottom { get; }
 
-    public float Width => Right - Left;
-    public float Height => Top - Bottom;
+        public FieldBounds(float left, float right, float top, float bottom)
+        {
+            Left = left;
+            Right = right;
+            Top = top;
+            Bottom = bottom;
+        }
+
+        public float Width => Right - Left;
+        public float Height => Top - Bottom;
+
+        public FieldBounds Normalized()
+        {
+            float left = Left, right = Right;
+            float top = Top, bottom = Bottom;
+
+            if(left > right)
+            {
+                float t = left;
+                left = right;
+                right = t;
+            }
+
+            if(top < bottom)
+            {
+                float t = top;
+                top = bottom;
+                bottom = t;
+            }
+
+            return new FieldBounds(left, right, top, bottom);
+        }
+    }
 }
