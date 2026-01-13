@@ -3,42 +3,42 @@ namespace PanicEngine.Maths
 
     public readonly struct FieldBounds
     {
-        public float Left { get; }
-        public float Right { get; }
-        public float Top { get; }
-        public float Bottom { get; }
+        public float MinX { get; }
+        public float MaxX { get; }
+        public float MinY { get; }
+        public float MaxY { get; }
 
-        public FieldBounds(float left, float right, float top, float bottom)
+        public FieldBounds(float minX, float maxX, float minY, float maxY)
         {
-            Left = left;
-            Right = right;
-            Top = top;
-            Bottom = bottom;
+            MinX = minX;
+            MaxX = maxX;
+            MinY = minY;
+            MaxY = maxY;
         }
 
-        public float Width => Right - Left;
-        public float Height => Top - Bottom;
+        public float Width => MaxX - MinX;
+        public float Height => MaxY - MinY;
 
         public FieldBounds Normalized()
         {
-            float left = Left, right = Right;
-            float top = Top, bottom = Bottom;
+            float minX = MinX, maxX = MaxX;
+            float minY = MinY, maxY = MaxY;
 
-            if(left > right)
+            if(minX > maxX)
             {
-                float t = left;
-                left = right;
-                right = t;
+                float t = minX;
+                minX = maxX;
+                maxX = t;
             }
 
-            if(top < bottom)
+            if(minY < maxY)
             {
-                float t = top;
-                top = bottom;
-                bottom = t;
+                float t = minY;
+                minY = maxY;
+                maxY = t;
             }
 
-            return new FieldBounds(left, right, top, bottom);
+            return new FieldBounds(minX, maxX, minY, maxY);
         }
     }
 }

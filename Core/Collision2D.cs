@@ -16,38 +16,38 @@ namespace PanicEngine.Core
             float radius = body.Radius;
             PanicLogger.Debug($"Resolving wall collision for body {body.Id} with position: {position} and velocity: {velocity} and restitution: {restitution}");
 
-            float left = fieldBounds.Left + radius;
-            float right = fieldBounds.Right - radius;
-            float top = fieldBounds.Top - radius;
-            float bottom = fieldBounds.Bottom + radius;
+            float minX = fieldBounds.MinX + radius;
+            float maxX = fieldBounds.MaxX - radius;
+            float minY = fieldBounds.MinY - radius;
+            float maxY = fieldBounds.MaxY + radius;
             
-            if(position.X < left)
+            if(position.X < minX)
             {
-                position = new Vector2D(left, position.Y);
+                position = new Vector2D(minX, position.Y);
                 var wallNormal = new Vector2D(1f, 0f);
                 velocity = velocity.Reflect(wallNormal) * restitution;
                 PanicLogger.Debug($"Wall collision detected on left side for body {body.Id} with new position: {position} and new velocity: {velocity}");
             }
             
-            if(position.X > right)
+            if(position.X > maxX)
             {
-                position = new Vector2D(right, position.Y);
+                position = new Vector2D(maxX, position.Y);
                 var wallNormal = new Vector2D(-1f, 0f);
                 velocity = velocity.Reflect(wallNormal) * restitution;
                 PanicLogger.Debug($"Wall collision detected on right side for body {body.Id} with new position: {position} and new velocity: {velocity}");
             }
 
-            if(position.Y > top)
+            if(position.Y > maxY)
             {
-                position = new Vector2D(position.X, top);
+                position = new Vector2D(position.X, maxY);
                 var wallNormal = new Vector2D(0f, -1f);
                 velocity = velocity.Reflect(wallNormal) * restitution;
                 PanicLogger.Debug($"Wall collision detected on top side for body {body.Id} with new position: {position} and new velocity: {velocity}");
             }
             
-            if(position.Y < bottom)
+            if(position.Y < minY)
             {
-                position = new Vector2D(position.X, bottom);
+                position = new Vector2D(position.X, minY);
                 var wallNormal = new Vector2D(0f, 1f);
                 velocity = velocity.Reflect(wallNormal) * restitution;
                 PanicLogger.Debug($"Wall collision detected on bottom side for body {body.Id} with new position: {position} and new velocity: {velocity}");
