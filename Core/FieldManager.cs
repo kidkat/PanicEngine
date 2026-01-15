@@ -6,10 +6,9 @@ using PanicEngine.Events;
 
 namespace PanicEngine.Core
 {
-
     public sealed class FieldManager
     {
-        private readonly List<Body2D> _bodies = new();
+        private readonly List<Body2D> _bodies = [];
         public FieldBounds FieldBounds { get; }
         public IReadOnlyList<Body2D> Bodies => _bodies;
 
@@ -19,7 +18,6 @@ namespace PanicEngine.Core
         private readonly List<PanicEvent> _events = new(8);
         private readonly List<Trigger2D> _triggers = new(8);
         private readonly List<TriggerEvent> _triggerEvents = new(8);
-
         public IReadOnlyList<PanicEvent> Events => _events;
         public IReadOnlyList<TriggerEvent> TriggerEvents => _triggerEvents;
 
@@ -36,14 +34,17 @@ namespace PanicEngine.Core
 
         public void AddBody(Body2D body)
         {
-            if(body == null) throw new ArgumentNullException(nameof(body));
+            // if(body == null) throw new ArgumentNullException(nameof(body));
+            ArgumentNullException.ThrowIfNull(body);
+
             _bodies.Add(body);
             PanicLogger.Info($"Body added: {body.Id}");
         }
 
         public void RemoveBody(Body2D body)
         {
-            if(body == null) throw new ArgumentNullException(nameof(body));
+            // if(body == null) throw new ArgumentNullException(nameof(body));
+            ArgumentNullException.ThrowIfNull(body);
             _bodies.Remove(body);
             PanicLogger.Info($"Body removed: {body.Id}");
         }
@@ -170,7 +171,7 @@ namespace PanicEngine.Core
 
         private void CheckGoals()
         {
-            Body2D ball = null;
+            Body2D? ball = null;
             for(int i = 0; i < _bodies.Count; i++)
             {
                 if(_bodies[i].Id == 0)
