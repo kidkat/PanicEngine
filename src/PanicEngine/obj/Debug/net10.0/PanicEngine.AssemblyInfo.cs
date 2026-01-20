@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PanicEngine")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f28403bf5f9ea780b299b4f40c197356d1cdc358")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4f95f9a97d4dccdc5d38193aed4a7bdf2f5699c2")]
 [assembly: System.Reflection.AssemblyProductAttribute("PanicEngine")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PanicEngine")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -131,7 +131,7 @@ namespace PanicEngine.Core
 
                 if(body.Velocity.LengthSquared > maxSpeedSquared)
                 {
-                    body.Velocity = body.Velocity.Normalized() * maxSpeed;
+                    body.Velocity = body.Velocity.Normalized * maxSpeed;
                     PanicLogger.Debug($"Clamped velocity for body {body.Id}: {body.Velocity}");
                 }
             }
