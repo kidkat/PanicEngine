@@ -1,5 +1,6 @@
 using PanicEngine.Maths;
 using PanicEngine.Events;
+using PanicEngine.Physix;
 
 namespace PanicEngine.Core
 {

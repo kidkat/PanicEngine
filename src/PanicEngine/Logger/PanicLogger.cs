@@ -8,26 +8,22 @@ namespace PanicEngine.Logger
 
         public static void Debug(string message)
         {
-            if(LogHandler != null)
-                LogHandler($"[PanicEngine] {message}");
+            LogHandler?.Invoke($"[PanicEngine] {message}");
         }
 
         public static void Info(string message)
         {
-            if(LogHandler != null)
-                LogHandler($"[PanicEngine][INFO] {message}");
+            LogHandler?.Invoke($"[PanicEngine][INFO] {message}");
         }
 
         public static void Warning(string message)
         {
-            if(LogHandler != null)
-                LogHandler($"[PanicEngine][WARN] {message}");
+            LogHandler?.Invoke($"[PanicEngine][WARN] {message}");
         }
 
         public static void Error(string message)
         {
-            if(LogHandler != null)
-                LogHandler($"[PanicEngine][ERROR] {message}");
+            LogHandler?.Invoke($"[PanicEngine][ERROR] {message}");
         }
     }
 }

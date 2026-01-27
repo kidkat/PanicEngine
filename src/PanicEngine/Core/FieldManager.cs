@@ -1,6 +1,7 @@
 using System;   
 using System.Collections.Generic;
 using PanicEngine.Maths;
+using PanicEngine.Physix;
 using PanicEngine.Logger;
 using PanicEngine.Events;
 

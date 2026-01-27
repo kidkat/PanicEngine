@@ -2,7 +2,7 @@ using PanicEngine.Maths;
 using PanicEngine.Logger;
 using System;
 
-namespace PanicEngine.Core
+namespace PanicEngine.Physix
 {
     public sealed class Body2D
     {
@@ -10,21 +10,39 @@ namespace PanicEngine.Core
         public Vector2D Position { get; set; }
         public Vector2D Velocity { get; set; }
 
-        public float Radius { get; set; }
-        public float Mass { get; }
+        private float _radius;
+        public float Radius
+        {
+            get => _radius;
+            set
+            {
+                if(value <= 0f) throw new ArgumentException("Radius must be greater than 0");
+                _radius = value;
+            }
+        }
+        public float Mass { get; } 
         public float InverseMass { get; }
-        public float Restitution { get; set; } = 0.6f;
-        public float LinearDamping { get; set; } = 0.5f;
+        private float _restitution = 0.6f;
+        public float Restitution
+        {
+            get => _restitution;
+            set => _restitution = Math.Clamp(value, 0f, 1f);
+        }
+        private float _linearDamping = 0.5f;
+        public float LinearDamping
+        {
+            get => _linearDamping;
+            set => _linearDamping = Math.Clamp(value, 0f, 1f);
+        }
         public float SleepSpeed { get; set; } = 0.02f;
+        public bool IsSleeping { get; set; } = false;
         public bool IsStatic { get; set; } = false;
-    
-        // Вращение (для бильярда)
-        public float AngularVelocity { get; set; } = 0.0f;
-        public float Angle { get; set; } = 0.0f; // Текущий угол поворота
-        public float AngularFriction { get; set; } = 0.95f; // Трение вращения
 
         public Body2D(int id, Vector2D position, float mass, float radius)
         {
+            if(id < 0) throw new ArgumentException("Id must be greater than 0");
+            if(radius <= 0f) throw new ArgumentException("Radius must be greater than 0");
+
             Id = id;
             Position = position;
             Velocity = Vector2D.Zero;
@@ -33,14 +51,12 @@ namespace PanicEngine.Core
             Radius = radius;
         }
 
-
         /// <summary>
         /// Шаг симуляции: затухание + интеграция позиции.
         /// Коллизии считаются снаружи (World/PhysicsSolver).
         /// </summary>
         public void Step(float deltaTime)
         {
-            PanicLogger.Debug($"Stepping body {Id} with deltaTime: {deltaTime}");
             if(deltaTime <= 0f) return;
             if(IsStatic) return;
 
@@ -49,17 +65,20 @@ namespace PanicEngine.Core
             if(damping < 0f) damping = 0f;
 
             Velocity *= damping;
-            PanicLogger.Debug($"Velocity after damping: {Velocity}");
 
             if(Velocity.LengthSquared < SleepSpeed * SleepSpeed)
             {
-                Velocity = Vector2D.Zero;
-                PanicLogger.Debug($"Velocity set to zero for body {Id}");
+                if(!IsSleeping)
+                {
+                    Velocity = Vector2D.Zero;
+                    IsSleeping = true;
+                    PanicLogger.Info($"Body {Id} is sleeping");
+                }
                 return;
             }
 
+            IsSleeping = false;
             Position += Velocity * deltaTime;
-            PanicLogger.Debug($"Position after integration: {Position}");
         }
 
         /// <summary>
@@ -69,8 +88,8 @@ namespace PanicEngine.Core
         public void ApplyImpulse(Vector2D impulse)
         {
             if(IsStatic) return;
+            if(IsSleeping) IsSleeping = false;
             Velocity += impulse * InverseMass;
-            PanicLogger.Debug($"Velocity after impulse: {Velocity}");
         }
     }
 }

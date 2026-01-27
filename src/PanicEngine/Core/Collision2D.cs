@@ -1,5 +1,6 @@
 using System;
 using PanicEngine.Maths;
+using PanicEngine.Physix;
 using PanicEngine.Logger;
 
 namespace PanicEngine.Core
@@ -71,7 +72,7 @@ namespace PanicEngine.Core
             float distance;
             Vector2D normal;
 
-            if(distanceSquared > settings.Epsilon * settings.Epsilon)
+            if(distanceSquared > float.Epsilon * float.Epsilon)
             {
                 distance = (float)Math.Sqrt(distanceSquared);
                 normal = delta / distance; //unit

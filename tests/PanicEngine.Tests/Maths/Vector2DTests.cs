@@ -6,20 +6,6 @@ namespace PanicEngine.Tests.Maths
 {
     public class Vector2DTests
     {
-        private readonly ITestOutputHelper _output;
-        public Vector2DTests(ITestOutputHelper output)
-        {
-            _output = output;
-        }
-
-        [Fact]
-        public void Test_Vector2D_Constructor_With_Zero_Values()
-        {
-            var vector = new Vector2D();
-
-            Assert.Equal(0, vector.X);
-            Assert.Equal(0, vector.Y);
-        }
 
         [Fact]
         public void Test_Vector2D_Constructor_With_Values()

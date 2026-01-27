@@ -2,33 +2,30 @@ using System;
 
 namespace PanicEngine.Maths
 {
-    
-    public struct Vector2D
+    public struct Vector2D(float x, float y)
     {
-        public float X;
-        public float Y;
+        public float X = x;
+        public float Y = y;
 
-        public Vector2D() : this(0f, 0f) {}
-
-        public Vector2D(float x, float y)
-        {
-            X = x;
-            Y = y;
-        }
-
-        public static Vector2D Zero = new(0f, 0f);
+        public static readonly Vector2D Zero = new(0f, 0f);
+        //|a|² = ax² + ay²
         public readonly float LengthSquared => X * X + Y * Y;
+        //|a| = √(ax² + ay²)
         public readonly float Length => (float) Math.Sqrt(LengthSquared);
+        //a / |a|
         public readonly Vector2D Normalized => Length > float.Epsilon ? this / Length : Zero;
+        //a · b = ax × bx + ay × by
         public readonly float Dot(Vector2D other) => X * other.X + Y * other.Y;
+        //a × b = ax × by - ay × bx
         public readonly float Cross(Vector2D other) => X * other.Y - Y * other.X;
         public readonly Vector2D Perp() => new(-Y, X);
+        //r = d - 2(d · n)n
         public readonly Vector2D Reflect(Vector2D unitNormal)
         {
             var dot = Dot(unitNormal);
             return this - 2f * dot * unitNormal;
         }
-
+        //|a - b|² = (ax - bx)² + (ay - by)²
         public readonly float DistanceSquared(Vector2D other)
         {
             var distanceX = X - other.X;
@@ -36,7 +33,7 @@ namespace PanicEngine.Maths
 
             return distanceX * distanceX + distanceY * distanceY;
         }
-
+        //|a - b| = √((ax - bx)² + (ay - by)²)
         public readonly float Distance(Vector2D other) => (float) Math.Sqrt(DistanceSquared(other));
 
         public override readonly string ToString() => $"({X}, {Y})";

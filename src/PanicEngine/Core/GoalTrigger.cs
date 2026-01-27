@@ -1,4 +1,5 @@
 using PanicEngine.Maths;
+using PanicEngine.Physix;
 
 namespace PanicEngine.Core
 {
