@@ -1,6 +1,6 @@
-namespace PanicEngine.Core
+namespace PanicEngine.Physix
 {
-    public sealed class PhysicsSettings
+    public sealed class PhysixSettings
     {
         public int SolverIterations { get; set; } = 2;
         public float PositionCorrectionPercent { get; set; } = 0.8f;

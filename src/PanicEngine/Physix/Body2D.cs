@@ -60,7 +60,7 @@ namespace PanicEngine.Physix
             if(deltaTime <= 0f) return;
             if(IsStatic) return;
 
-            // Расчет коэффициента затухания
+            // Расчет коэффициента затухания (v_new = v_old * (1 - damping * Δt))
             float damping = 1f - LinearDamping * deltaTime;
             if(damping < 0f) damping = 0f;
 

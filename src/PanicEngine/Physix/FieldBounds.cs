@@ -18,10 +18,10 @@ namespace PanicEngine.Physix
             if(minX > maxX)
                 (maxX, minX) = (minX, maxX);
 
-            if (minY < maxY)
+            if (minY > maxY)
                 (maxY, minY) = (minY, maxY);
 
-            return new FieldBounds(minX, maxX, minY, maxY);
+            return new FieldBounds(minX, minY, maxX, maxY);
         }
     }
 }

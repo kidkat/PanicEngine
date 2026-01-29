@@ -47,6 +47,11 @@ namespace PanicEngine.Tests.Maths
             var vector = new Vector2D(3, 4);
 
             Assert.Equal(new Vector2D(0.6f, 0.8f), vector.Normalized);
+            float x = vector.Normalized.X;
+            float y = vector.Normalized.Y;
+            Assert.Equal(0.6f, x);
+            Assert.Equal(0.8f, y);
+            Assert.Equal(1, x * x + y * y);
         }
 
         [Fact]
@@ -170,6 +175,16 @@ namespace PanicEngine.Tests.Maths
             var scalar = 0;
             
             Assert.Equal(Vector2D.Zero, vector / scalar);
+        }
+
+        [Fact]
+        public void Test_Vector2D_Equal()
+        {
+            var vector1 = new Vector2D(1, 2);
+            var vector2 = new Vector2D(1, 2);
+            
+            Assert.True(vector1.Equal(vector2));
+            Assert.False(vector1.Equal(new Vector2D(1, 3)));
         }
     }
 }

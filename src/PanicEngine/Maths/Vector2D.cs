@@ -2,10 +2,10 @@ using System;
 
 namespace PanicEngine.Maths
 {
-    public struct Vector2D(float x, float y)
+    public readonly struct Vector2D(float x, float y)
     {
-        public float X = x;
-        public float Y = y;
+        public readonly float X = x;
+        public readonly float Y = y;
 
         public static readonly Vector2D Zero = new(0f, 0f);
         //|a|² = ax² + ay²
@@ -46,5 +46,7 @@ namespace PanicEngine.Maths
         public static Vector2D operator *(float b, Vector2D a) => new(a.X * b, a.Y * b);
         public static Vector2D operator /(Vector2D a, float b) => 
             Math.Abs(b) > float.Epsilon ? new(a.X / b, a.Y / b) : Zero;
+
+        public bool Equal(Vector2D other) => X == other.X && Y == other.Y;
     }
 }

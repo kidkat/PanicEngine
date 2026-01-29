@@ -9,18 +9,18 @@ namespace PanicEngine.Core
 {
     public sealed class FieldManager
     {
-        private readonly List<Body2D> _bodies = [];
+        private readonly BodiesManager _bodiesManager = new();  
+        public IReadOnlyList<Body2D> Bodies => _bodiesManager.Bodies;
         public FieldBounds FieldBounds { get; }
-        public IReadOnlyList<Body2D> Bodies => _bodies;
 
-        public PhysicsSettings Settings { get; set; } = new();
+        public PhysixSettings Settings { get; set; } = new();
 
-        private readonly List<GoalTrigger> _goals = new(4);
-        private readonly List<PanicEvent> _events = new(8);
-        private readonly List<Trigger2D> _triggers = new(8);
-        private readonly List<TriggerEvent> _triggerEvents = new(8);
-        public IReadOnlyList<PanicEvent> Events => _events;
-        public IReadOnlyList<TriggerEvent> TriggerEvents => _triggerEvents;
+        // private readonly List<GoalTrigger> _goals = new(4);
+        // private readonly List<PanicEvent> _events = new(8);
+        // private readonly List<Trigger2D> _triggers = new(8);
+        // private readonly List<TriggerEvent> _triggerEvents = new(8);
+        // public IReadOnlyList<PanicEvent> Events => _events;
+        // public IReadOnlyList<TriggerEvent> TriggerEvents => _triggerEvents;
 
         public FieldManager(FieldBounds fieldBounds)
         {
@@ -33,69 +33,36 @@ namespace PanicEngine.Core
             }
         }
 
-        public void AddBody(Body2D body)
+        public FieldManager(FieldBounds fieldBounds, BodiesManager bodiesManager) : this(fieldBounds)
         {
-            // if(body == null) throw new ArgumentNullException(nameof(body));
-            ArgumentNullException.ThrowIfNull(body);
-
-            _bodies.Add(body);
-            PanicLogger.Info($"Body added: {body.Id}");
+            ArgumentNullException.ThrowIfNull(bodiesManager);
+            _bodiesManager = bodiesManager;
         }
 
-        public void RemoveBody(Body2D body)
-        {
-            // if(body == null) throw new ArgumentNullException(nameof(body));
-            ArgumentNullException.ThrowIfNull(body);
-            _bodies.Remove(body);
-            PanicLogger.Info($"Body removed: {body.Id}");
-        }
+        // public void AddGoalTrigger(GoalTrigger goal)
+        // {
+        //     _goals.Add(goal);
+        // }
 
-        public Body2D? GetBodyById(int id)
-        {
-            for(int i =0; i < _bodies.Count; i++)
-            {
-                if(_bodies[i].Id == id)
-                {
-                    PanicLogger.Warning($"Body found: {id}");
-                    return _bodies[i];
-                }
-                
-            }
+        // public void ClearGoals()
+        // {
+        //     _goals.Clear();
+        // }
 
-            PanicLogger.Error($"Body not found: {id}");
-            return null;
-        }
+        // public void AddTrigger(Trigger2D trigger)
+        // {
+        //     if(trigger == null)
+        //     {
+        //         PanicLogger.Error("Trigger is null");
+        //         throw new ArgumentNullException(nameof(trigger));
+        //     }
+        //     _triggers.Add(trigger);
+        // }
 
-        public void ClearBodies()
-        {
-            _bodies.Clear();
-            PanicLogger.Info("Bodies cleared");
-        }
-
-        public void AddGoalTrigger(GoalTrigger goal)
-        {
-            _goals.Add(goal);
-        }
-
-        public void ClearGoals()
-        {
-            _goals.Clear();
-        }
-
-        public void AddTrigger(Trigger2D trigger)
-        {
-            if(trigger == null)
-            {
-                PanicLogger.Error("Trigger is null");
-                throw new ArgumentNullException(nameof(trigger));
-            }
-            _triggers.Add(trigger);
-        }
-
-        public void ClearTriggers()
-        {
-            _triggers.Clear();
-        }
+        // public void ClearTriggers()
+        // {
+        //     _triggers.Clear();
+        // }
 
         // ------------------------
         // Шаг симуляции
@@ -105,46 +72,15 @@ namespace PanicEngine.Core
             PanicLogger.Debug($"Stepping with deltaTime: {deltaTime}");
             if(deltaTime <= 0f) return;
 
-            ClampVelocity();
-            IntegrateBodies(deltaTime);
+            _bodiesManager.LimitVelocity(Settings);
+            _bodiesManager.UpdateBodies(deltaTime);
             SolveCollisions();
 
-            _events.Clear();
-            CheckGoals();
+            // _events.Clear();
+            // CheckGoals();
 
-            _triggerEvents.Clear();
-            UpdateTriggers();
-        }
-
-        private void ClampVelocity()
-        {
-
-            float maxSpeed = Settings.MaxSpeed;
-            if(maxSpeed <= 0f) return;
-
-            float maxSpeedSquared = maxSpeed * maxSpeed;
-            PanicLogger.Debug($"Max speed squared: {maxSpeedSquared}");
-
-            for(int i= 0; i < _bodies.Count; i++)
-            {
-                var body = _bodies[i];
-                if(body.IsStatic) continue;
-
-                if(body.Velocity.LengthSquared > maxSpeedSquared)
-                {
-                    body.Velocity = body.Velocity.Normalized * maxSpeed;
-                    PanicLogger.Debug($"Clamped velocity for body {body.Id}: {body.Velocity}");
-                }
-            }
-        }
-
-        private void IntegrateBodies(float deltaTime)
-        {
-            PanicLogger.Debug($"Integrating bodies with deltaTime: {deltaTime}");
-            for(int i= 0; i < _bodies.Count; i++)
-            {
-                _bodies[i].Step(deltaTime);
-            }
+            // _triggerEvents.Clear();
+            // UpdateTriggers();
         }
 
         private void SolveCollisions()
@@ -154,56 +90,56 @@ namespace PanicEngine.Core
             for(int iter = 0; iter < iterations; iter++)
             {
                 //wall collisions
-                for(int i= 0; i < _bodies.Count; i++)
+                for(int i= 0; i < _bodiesManager.Bodies.Count; i++)
                 {
-                    Collision2D.ResolveWallCollision(_bodies[i], FieldBounds);
+                    Collision2D.ResolveWallCollision(_bodiesManager.Bodies[i], FieldBounds);
                 }
 
                 //body collisions
-                for(int i= 0; i < _bodies.Count; i++)
+                for(int i= 0; i < _bodiesManager.Bodies.Count; i++)
                 {
-                    for(int j= i+1; j < _bodies.Count; j++)
+                    for(int j= i+1; j < _bodiesManager.Bodies.Count; j++)
                     {
-                        Collision2D.ResolveBodyCollision(_bodies[i], _bodies[j], Settings);
+                        Collision2D.ResolveBodyCollision(_bodiesManager.Bodies[i], _bodiesManager.Bodies[j], Settings);
                     }
                 }
             }
         }
 
-        private void CheckGoals()
-        {
-            Body2D? ball = null;
-            for(int i = 0; i < _bodies.Count; i++)
-            {
-                if(_bodies[i].Id == 0)
-                {
-                    ball = _bodies[i];
-                    break;
-                }
-            }
+        // private void CheckGoals()
+        // {
+        //     Body2D? ball = null;
+        //     for(int i = 0; i < _bodies.Count; i++)
+        //     {
+        //         if(_bodies[i].Id == 0)
+        //         {
+        //             ball = _bodies[i];
+        //             break;
+        //         }
+        //     }
 
-            if(ball == null) return;
+        //     if(ball == null) return;
 
-            for(int i = 0; i < _goals.Count; i++)
-            {
-                if(_goals[i].IsInside(ball))
-                {
-                    _events.Add(new PanicEvent(PanicEventType.GoalScored, _goals[i].TeamId));
-                    return;
-                }
-            }
-        }
+        //     for(int i = 0; i < _goals.Count; i++)
+        //     {
+        //         if(_goals[i].IsInside(ball))
+        //         {
+        //             _events.Add(new PanicEvent(PanicEventType.GoalScored, _goals[i].TeamId));
+        //             return;
+        //         }
+        //     }
+        // }
 
-        private void UpdateTriggers()
-        {
-            for(int i = 0; i < _bodies.Count; i++)
-            {
-                Trigger2D trigger = _triggers[i];
-                for(int j = 0;j < _bodies.Count; j++)
-                {
-                    trigger.Update(_bodies[j], _triggerEvents);
-                }
-            }
-        }
+        // private void UpdateTriggers()
+        // {
+        //     for(int i = 0; i < _triggers.Count; i++)
+        //     {
+        //         Trigger2D trigger = _triggers[i];
+        //         for(int j = 0;j < _bodies.Count; j++)
+        //         {
+        //             trigger.Update(_bodies[j], _triggerEvents);
+        //         }
+        //     }
+        // }
     }
 }
