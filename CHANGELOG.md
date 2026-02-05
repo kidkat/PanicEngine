@@ -15,3 +15,4 @@ All notable changes to this project will be documented in this file.
 - FieldBounds added + Unit tests
 - FieldManager added as core manager for all other components
 - Bodiesmanager added as manager for all bodies in the field + Unit tests
+- Added Shapes(Circle, Rect, Composite) + unit tests for them 
