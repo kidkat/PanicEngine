@@ -20,7 +20,7 @@ namespace PanicEngine.Physix
             float leftBorder = fieldBounds.MinX + body.Radius; 
             float rightBorder = fieldBounds.MaxX - body.Radius;
             float topBorder = fieldBounds.MinY + body.Radius;
-            float bottomBorder = fieldBounds.MaxY + body.Radius;
+            float bottomBorder = fieldBounds.MaxY - body.Radius;
             
             if(position.X < leftBorder)
             {
@@ -108,7 +108,7 @@ namespace PanicEngine.Physix
             if(velocityAlongNormal > 0f) return;
 
             // Эффективная упругость пары (часто берут min)
-            float restitution = Math.Max(body1.Restitution, body2.Restitution);
+            float restitution = Math.Min(body1.Restitution, body2.Restitution);
 
             // j = -(1+e) * (rv·n) / (invMassA + invMassB)
             float j = -(1f + restitution) * velocityAlongNormal;

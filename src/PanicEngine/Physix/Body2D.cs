@@ -91,5 +91,18 @@ namespace PanicEngine.Physix
             if(IsSleeping) IsSleeping = false;
             Velocity += impulse * InverseMass;
         }
+
+        /// <summary>
+        /// Мгновенный импульс по направлению и величине.
+        /// direction — направление (будет нормализовано), magnitude — величина импульса (сила удара).
+        /// </summary>
+        public void ApplyImpulse(Vector2D direction, float magnitude)
+        {
+            if(IsStatic) return;
+            if(magnitude <= 0f) return;
+            if(IsSleeping) IsSleeping = false;
+            Vector2D impulse = direction.Normalized * magnitude;
+            Velocity += impulse * InverseMass;
+        }
     }
 }

@@ -1,11 +1,19 @@
 namespace PanicEngine.Physix
 {
-    public readonly struct FieldBounds(float minX, float minY, float maxX, float maxY)
+    public readonly struct FieldBounds
     {
-        public readonly float MinX { get; } = minX;  
-        public readonly float MinY { get; } = minY;
-        public readonly float MaxX { get; } = maxX;
-        public readonly float MaxY { get; } = maxY;
+        public readonly float MinX { get; }
+        public readonly float MinY { get; }
+        public readonly float MaxX { get; }
+        public readonly float MaxY { get; }
+
+        public FieldBounds(float minX, float minY, float maxX, float maxY)
+        {
+            MinX = minX;
+            MinY = minY;
+            MaxX = maxX;
+            MaxY = maxY;
+        }
 
         public float Width => MaxX - MinX;
         public float Height => MaxY - MinY;

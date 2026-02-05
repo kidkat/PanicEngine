@@ -1,6 +1,7 @@
 using PanicEngine.Maths;
 using PanicEngine.Events;
 using PanicEngine.Physix;
+using System.Collections.Generic;
 
 namespace PanicEngine.Core
 {
@@ -11,7 +12,7 @@ namespace PanicEngine.Core
         public int Data { get; }
         public Rect2D Area { get; }
 
-        private readonly HashSet<int> _insideBodies = new();
+        private readonly HashSet<int> _insideBodies = new HashSet<int>();
 
         public Trigger2D(int id, string tag, int data, Rect2D area)
         {

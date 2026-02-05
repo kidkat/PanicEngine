@@ -14,4 +14,4 @@ All notable changes to this project will be documented in this file.
 - Basic PhysixSettings added
 - FieldBounds added + Unit tests
 - FieldManager added as core manager for all other components
-- Bodiesmanager added as manager for all bodies in the field
+- Bodiesmanager added as manager for all bodies in the field + Unit tests

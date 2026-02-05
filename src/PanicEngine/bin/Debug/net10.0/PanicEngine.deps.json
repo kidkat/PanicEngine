@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v10.0": {
-      "PanicEngine/1.0.0": {
+      "PanicEngine/0.0.1": {
         "runtime": {
           "PanicEngine.dll": {}
         }
@@ -14,7 +14,7 @@
     }
   },
   "libraries": {
-    "PanicEngine/1.0.0": {
+    "PanicEngine/0.0.1": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -1,11 +1,19 @@
 namespace PanicEngine.Maths
 {
-    public readonly struct Rect2D(float minX, float minY, float maxX, float maxY)
+    public readonly struct Rect2D
     {
-        public readonly float MinX { get; } = minX;
-        public readonly float MinY { get; } = minY;
-        public readonly float MaxX { get; } = maxX;
-        public readonly float MaxY { get; } = maxY;
+        public readonly float MinX { get; }
+        public readonly float MinY { get; }
+        public readonly float MaxX { get; }
+        public readonly float MaxY { get; }
+
+        public Rect2D(float minX, float minY, float maxX, float maxY)
+        {
+            MinX = minX;
+            MinY = minY;
+            MaxX = maxX;
+            MaxY = maxY;
+        }
 
         public bool Contains(Vector2D point)
         {

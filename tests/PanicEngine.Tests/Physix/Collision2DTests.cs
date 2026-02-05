@@ -95,9 +95,9 @@ namespace PanicEngine.Tests.Physix
             Collision2D.ResolveWallCollision(body, fieldBounds);
 
             Assert.Equal(0f, body.Position.X, 5);
-            Assert.Equal(6f, body.Position.Y, 5);
+            Assert.Equal(4f, body.Position.Y, 5);
             Assert.Equal(0f, body.Velocity.X, 5);
-            Assert.Equal(2f, body.Velocity.Y, 5);
+            Assert.Equal(-2f, body.Velocity.Y, 5);
         }
 
         [Fact]
@@ -153,10 +153,10 @@ namespace PanicEngine.Tests.Physix
             Collision2D.ResolveWallCollision(body, fieldBounds);
 
             Assert.Equal(4f, body.Position.X, 5);
-            Assert.Equal(6f, body.Position.Y, 5);
+            Assert.Equal(4f, body.Position.Y, 5);
             //velocity should be reflected in both axes
             Assert.True(body.Velocity.X < 0, "Velocity X should be negative after reflection");
-            Assert.True(body.Velocity.Y > 0, "Velocity Y should be positive after reflection");
+            Assert.True(body.Velocity.Y < 0, "Velocity Y should be negative after reflection (bouncing up from bottom)");
         }
 
         [Fact]
@@ -292,7 +292,7 @@ namespace PanicEngine.Tests.Physix
             body1.IsStatic = true;
             var body2 = new Body2D(2, new Vector2D(1, 0), 1f, 1f);
             body2.IsStatic = true;
-            var settings = new PhysicsSettings();
+            var settings = new PhysixSettings();
             var originalPos1 = body1.Position;
             var originalPos2 = body2.Position;
             var originalVel1 = body1.Velocity;
@@ -311,7 +311,7 @@ namespace PanicEngine.Tests.Physix
         {
             var body1 = new Body2D(1, new Vector2D(0, 0), 1f, 1f);
             var body2 = new Body2D(2, new Vector2D(5, 0), 1f, 1f); //distance 5, sum of radii 2, 5^2 = 25 > 4
-            var settings = new PhysicsSettings();
+            var settings = new PhysixSettings();
             var originalPos1 = body1.Position;
             var originalPos2 = body2.Position;
             var originalVel1 = body1.Velocity;
@@ -332,7 +332,7 @@ namespace PanicEngine.Tests.Physix
             var body2 = new Body2D(2, new Vector2D(1.5f, 0), 1f, 1f); //distance 1.5, sum of radii 2, collision
             body1.Velocity = Vector2D.Zero;
             body2.Velocity = Vector2D.Zero; //no relative velocity
-            var settings = new PhysicsSettings
+            var settings = new PhysixSettings
             {
                 PositionCorrectionPercent = 0.8f,
                 PositionCorrectionSlop = 0.01f
@@ -353,7 +353,7 @@ namespace PanicEngine.Tests.Physix
             body2.Velocity = new Vector2D(-1, 0); //moving left
             body1.Restitution = 0.8f;
             body2.Restitution = 0.6f;
-            var settings = new PhysicsSettings();
+            var settings = new PhysixSettings();
 
             Collision2D.ResolveBodyCollision(body1, body2, settings);
 
@@ -368,7 +368,7 @@ namespace PanicEngine.Tests.Physix
             var body2 = new Body2D(2, new Vector2D(1.5f, 0), 1f, 1f);
             body1.Velocity = new Vector2D(-2, 0); //moving left
             body2.Velocity = new Vector2D(1, 0); //moving right (separating)
-            var settings = new PhysicsSettings();
+            var settings = new PhysixSettings();
             var originalVel1 = body1.Velocity;
             var originalVel2 = body2.Velocity;
 
@@ -385,7 +385,7 @@ namespace PanicEngine.Tests.Physix
             body1.IsStatic = true;
             var body2 = new Body2D(2, new Vector2D(1.5f, 0), 1f, 1f);
             body2.Velocity = new Vector2D(-1, 0);
-            var settings = new PhysicsSettings();
+            var settings = new PhysixSettings();
             var originalPos1 = body1.Position;
 
             Collision2D.ResolveBodyCollision(body1, body2, settings);
@@ -401,7 +401,7 @@ namespace PanicEngine.Tests.Physix
             var body2 = new Body2D(2, new Vector2D(0, 0), 1f, 1f); //exactly on the same position
             body1.Velocity = new Vector2D(1, 0);
             body2.Velocity = new Vector2D(-1, 0);
-            var settings = new PhysicsSettings();
+            var settings = new PhysixSettings();
 
             Collision2D.ResolveBodyCollision(body1, body2, settings);
 
@@ -416,7 +416,7 @@ namespace PanicEngine.Tests.Physix
             var body2 = new Body2D(2, new Vector2D(1.5f, 0), 1f, 1f); //mass 1
             body1.Velocity = Vector2D.Zero;
             body2.Velocity = Vector2D.Zero;
-            var settings = new PhysicsSettings
+            var settings = new PhysixSettings
             {
                 PositionCorrectionPercent = 0.8f,
                 PositionCorrectionSlop = 0.01f
@@ -437,7 +437,7 @@ namespace PanicEngine.Tests.Physix
             var body2 = new Body2D(2, new Vector2D(1.5f, 0), 1f, 1f);
             body1.Velocity = Vector2D.Zero;
             body2.Velocity = Vector2D.Zero;
-            var settings = new PhysicsSettings();
+            var settings = new PhysixSettings();
             var originalPos1 = body1.Position;
             var originalPos2 = body2.Position;
 
@@ -454,7 +454,7 @@ namespace PanicEngine.Tests.Physix
             var body2 = new Body2D(2, new Vector2D(1.5f, 0), 0f, 1f);
             body1.Velocity = new Vector2D(1, 0);
             body2.Velocity = new Vector2D(-1, 0);
-            var settings = new PhysicsSettings();
+            var settings = new PhysixSettings();
             var originalPos1 = body1.Position;
             var originalPos2 = body2.Position;
             var originalVel1 = body1.Velocity;
@@ -477,7 +477,7 @@ namespace PanicEngine.Tests.Physix
             // Расстояние = sqrt(1.0^2 + 1.0^2) ≈ 1.414, сумма радиусов = 2, проникновение ≈ 0.586
             body1.Velocity = Vector2D.Zero;
             body2.Velocity = Vector2D.Zero;
-            var settings = new PhysicsSettings();
+            var settings = new PhysixSettings();
             var originalDistance = body1.Position.Distance(body2.Position);
             var originalPos1 = body1.Position;
             var originalPos2 = body2.Position;
@@ -506,7 +506,7 @@ namespace PanicEngine.Tests.Physix
             body2.Velocity = new Vector2D(-2, 0);
             body1.Restitution = 1f;
             body2.Restitution = 1f;
-            var settings = new PhysicsSettings();
+            var settings = new PhysixSettings();
 
             Collision2D.ResolveBodyCollision(body1, body2, settings);
 
@@ -523,7 +523,7 @@ namespace PanicEngine.Tests.Physix
             body2.Velocity = new Vector2D(-1, 0);
             body1.Restitution = 0f;
             body2.Restitution = 0f;
-            var settings = new PhysicsSettings();
+            var settings = new PhysixSettings();
 
             Collision2D.ResolveBodyCollision(body1, body2, settings);
 
@@ -540,7 +540,7 @@ namespace PanicEngine.Tests.Physix
             body2.Velocity = new Vector2D(-1, 0);
             body1.Restitution = 0.3f;
             body2.Restitution = 0.9f; //maximum restitution
-            var settings = new PhysicsSettings();
+            var settings = new PhysixSettings();
 
             Collision2D.ResolveBodyCollision(body1, body2, settings);
 
@@ -555,7 +555,7 @@ namespace PanicEngine.Tests.Physix
             var body2 = new Body2D(2, new Vector2D(1.99f, 0), 1f, 1f); //small penetration
             body1.Velocity = Vector2D.Zero;
             body2.Velocity = Vector2D.Zero;
-            var settings = new PhysicsSettings
+            var settings = new PhysixSettings
             {
                 PositionCorrectionSlop = 0.02f //more penetration
             };
@@ -575,7 +575,7 @@ namespace PanicEngine.Tests.Physix
             body1.IsStatic = true;
             var body2 = new Body2D(2, new Vector2D(1.5f, 0), 1f, 1f);
             body2.Velocity = new Vector2D(-1, 0);
-            var settings = new PhysicsSettings();
+            var settings = new PhysixSettings();
             var originalPos1 = body1.Position;
             var originalVel1 = body1.Velocity;
 
@@ -594,7 +594,7 @@ namespace PanicEngine.Tests.Physix
             body1.Velocity = new Vector2D(1, 0);
             var body2 = new Body2D(2, new Vector2D(1.5f, 0), 1f, 1f);
             body2.IsStatic = true;
-            var settings = new PhysicsSettings();
+            var settings = new PhysixSettings();
             var originalPos2 = body2.Position;
             var originalVel2 = body2.Velocity;
 
@@ -613,8 +613,8 @@ namespace PanicEngine.Tests.Physix
             var body2 = new Body2D(2, new Vector2D(1.5f, 0), 1f, 1f);
             body1.Velocity = Vector2D.Zero;
             body2.Velocity = Vector2D.Zero;
-            var settings1 = new PhysicsSettings { PositionCorrectionPercent = 0.5f };
-            var settings2 = new PhysicsSettings { PositionCorrectionPercent = 1.0f };
+            var settings1 = new PhysixSettings { PositionCorrectionPercent = 0.5f };
+            var settings2 = new PhysixSettings { PositionCorrectionPercent = 1.0f };
             
             var body1a = new Body2D(1, new Vector2D(0, 0), 1f, 1f);
             var body2a = new Body2D(2, new Vector2D(1.5f, 0), 1f, 1f);

@@ -2,10 +2,16 @@ using System;
 
 namespace PanicEngine.Maths
 {
-    public readonly struct Vector2D(float x, float y)
+    public readonly struct Vector2D
     {
-        public readonly float X = x;
-        public readonly float Y = y;
+        public readonly float X;
+        public readonly float Y;
+
+        public Vector2D(float x, float y)
+        {
+            X = x;
+            Y = y;
+        }
 
         public static readonly Vector2D Zero = new(0f, 0f);
         //|a|² = ax² + ay²

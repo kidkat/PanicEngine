@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using PanicEngine.Maths;
 using PanicEngine.Physix;
 using PanicEngine.Logger;
-using PanicEngine.Events;
 
 namespace PanicEngine.Core
 {
     public sealed class FieldManager
     {
-        private readonly BodiesManager _bodiesManager = new();  
-        public IReadOnlyList<Body2D> Bodies => _bodiesManager.Bodies;
+        public BodiesManager BodiesManager { get; }
         public FieldBounds FieldBounds { get; }
 
         public PhysixSettings Settings { get; set; } = new();
@@ -31,12 +29,18 @@ namespace PanicEngine.Core
                 PanicLogger.Error("Field bounds are invalid");
                 throw new ArgumentException("Invalid FieldBounds: width/height must be > 0");
             }
+
+            BodiesManager = new BodiesManager();
         }
 
         public FieldManager(FieldBounds fieldBounds, BodiesManager bodiesManager) : this(fieldBounds)
         {
-            ArgumentNullException.ThrowIfNull(bodiesManager);
-            _bodiesManager = bodiesManager;
+            if(bodiesManager == null)
+            {
+                PanicLogger.Error("Bodies manager is null");
+                throw new ArgumentNullException(nameof(bodiesManager));
+            }
+            BodiesManager = bodiesManager;
         }
 
         // public void AddGoalTrigger(GoalTrigger goal)
@@ -72,8 +76,8 @@ namespace PanicEngine.Core
             PanicLogger.Debug($"Stepping with deltaTime: {deltaTime}");
             if(deltaTime <= 0f) return;
 
-            _bodiesManager.LimitVelocity(Settings);
-            _bodiesManager.UpdateBodies(deltaTime);
+            BodiesManager.LimitVelocity(Settings);
+            BodiesManager.UpdateBodies(deltaTime);
             SolveCollisions();
 
             // _events.Clear();
@@ -90,17 +94,17 @@ namespace PanicEngine.Core
             for(int iter = 0; iter < iterations; iter++)
             {
                 //wall collisions
-                for(int i= 0; i < _bodiesManager.Bodies.Count; i++)
+                for(int i= 0; i < BodiesManager.Bodies.Count; i++)
                 {
-                    Collision2D.ResolveWallCollision(_bodiesManager.Bodies[i], FieldBounds);
+                    Collision2D.ResolveWallCollision(BodiesManager.Bodies[i], FieldBounds);
                 }
 
                 //body collisions
-                for(int i= 0; i < _bodiesManager.Bodies.Count; i++)
+                for(int i= 0; i < BodiesManager.Bodies.Count; i++)
                 {
-                    for(int j= i+1; j < _bodiesManager.Bodies.Count; j++)
+                    for(int j= i+1; j < BodiesManager.Bodies.Count; j++)
                     {
-                        Collision2D.ResolveBodyCollision(_bodiesManager.Bodies[i], _bodiesManager.Bodies[j], Settings);
+                        Collision2D.ResolveBodyCollision(BodiesManager.Bodies[i], BodiesManager.Bodies[j], Settings);
                     }
                 }
             }

@@ -1,23 +1,35 @@
+#nullable enable
+
 using PanicEngine.Physix;
 using PanicEngine.Logger;
+using System.Collections.Generic;
+using System;
 
 namespace PanicEngine.Core
 {
     public sealed class BodiesManager
     {
-        private readonly List<Body2D> _bodies = [];
+        private readonly List<Body2D> _bodies = new List<Body2D>();
         public IReadOnlyList<Body2D> Bodies => _bodies;
 
         public void AddBody(Body2D body)
         {
-            ArgumentNullException.ThrowIfNull(body);
+            if(body == null)
+            {
+                PanicLogger.Error("Body is null");
+                throw new ArgumentNullException(nameof(body));
+            }
             _bodies.Add(body);
             PanicLogger.Info($"Body added: {body.Id}");
         }
 
         public void RemoveBody(Body2D body)
         {
-            ArgumentNullException.ThrowIfNull(body);
+            if(body == null)
+            {
+                PanicLogger.Error("Body is null");
+                throw new ArgumentNullException(nameof(body));
+            }
             _bodies.Remove(body);
             PanicLogger.Info($"Body removed: {body.Id}");
         }
@@ -60,7 +72,7 @@ namespace PanicEngine.Core
             if(maxSpeed <= 0f) return;
 
             float maxSpeedSquared = maxSpeed * maxSpeed;
-            PanicLogger.Debug($"Max speed squared: {maxSpeedSquared/2f}");
+            PanicLogger.Debug($"Max speed squared: {maxSpeedSquared}");
 
             for(int i= 0; i < _bodies.Count; i++)
             {
