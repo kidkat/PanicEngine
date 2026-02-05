@@ -14,7 +14,7 @@ namespace PanicEngine.Tests.Physix
         public void Test_ResolveWallCollision_StaticBody_DoesNothing()
         {
             var body = new Body2D(1, new Vector2D(0, 0), 1f, 1f);
-            body.IsStatic = true;
+            body.IsStatic = true;   
             body.Position = new Vector2D(-10, -10); //out of bounds
             body.Velocity = new Vector2D(5, 5);
             var fieldBounds = new FieldBounds(-5, -5, 5, 5);

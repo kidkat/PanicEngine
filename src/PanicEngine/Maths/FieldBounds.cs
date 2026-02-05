@@ -1,4 +1,4 @@
-namespace PanicEngine.Physix
+namespace PanicEngine.Maths
 {
     public readonly struct FieldBounds
     {

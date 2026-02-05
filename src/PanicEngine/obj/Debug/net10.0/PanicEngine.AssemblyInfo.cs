@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("PanicEngine - A physics engine library")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("0.0.0.1")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.0.1+12ce82236acc3e16ace8ebe3bbbd0966c2c4dbe0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.0.1+074b36bb5c6023146158919418fb1f6c8f22988c")]
 [assembly: System.Reflection.AssemblyProductAttribute("PanicEngine")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PanicEngine")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

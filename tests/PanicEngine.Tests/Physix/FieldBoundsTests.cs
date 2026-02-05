@@ -1,5 +1,6 @@
 using Xunit;
 using PanicEngine.Physix;
+using PanicEngine.Maths;
 
 namespace PanicEngine.Tests.Physix
 {
