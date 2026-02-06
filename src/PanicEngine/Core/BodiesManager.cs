@@ -9,7 +9,7 @@ namespace PanicEngine.Core
 {
     public sealed class BodiesManager
     {
-        private readonly List<Body2D> _bodies = new List<Body2D>();
+        private readonly List<Body2D> _bodies = new();
         public IReadOnlyList<Body2D> Bodies => _bodies;
 
         public void AddBody(Body2D body)
@@ -36,11 +36,12 @@ namespace PanicEngine.Core
 
         public void RemoveBodyById(int id)
         {
-            for(int i = 0; i < _bodies.Count; i++)
+
+            foreach(var body in _bodies)
             {
-                if(_bodies[i].Id.Equals(id))
+                if(body.Id.Equals(id))
                 {
-                    _bodies.RemoveAt(i);
+                    _bodies.Remove(body);
                     PanicLogger.Info($"Body removed: {id}");
                     return;
                 }
@@ -49,11 +50,11 @@ namespace PanicEngine.Core
 
         public Body2D? GetBodyById(int id)
         {
-            for(int i = 0; i < _bodies.Count; i++)
+            foreach(var body in _bodies)
             {
-                if(_bodies[i].Id.Equals(id))
+                if(body.Id.Equals(id))
                 {
-                    return _bodies[i];
+                    return body;
                 }
             }
 
@@ -74,9 +75,8 @@ namespace PanicEngine.Core
             float maxSpeedSquared = maxSpeed * maxSpeed;
             PanicLogger.Debug($"Max speed squared: {maxSpeedSquared}");
 
-            for(int i= 0; i < _bodies.Count; i++)
+            foreach(var body in _bodies)
             {
-                var body = _bodies[i];
                 if(body.IsStatic) continue;
 
                 if(body.Velocity.LengthSquared > maxSpeedSquared)
@@ -90,9 +90,9 @@ namespace PanicEngine.Core
         public void UpdateBodies(float deltaTime)
         {
             PanicLogger.Debug($"Integrating bodies with deltaTime: {deltaTime}");
-            for(int i= 0; i < _bodies.Count; i++)
+            foreach(var body in _bodies)
             {
-                _bodies[i].Step(deltaTime);
+                body.Step(deltaTime);
             }
         }
     }

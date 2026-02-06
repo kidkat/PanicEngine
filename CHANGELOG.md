@@ -14,5 +14,7 @@ All notable changes to this project will be documented in this file.
 - Basic PhysixSettings added
 - FieldBounds added + Unit tests
 - FieldManager added as core manager for all other components
-- Bodiesmanager added as manager for all bodies in the field + Unit tests
+- Bodiesmanager added as manager for all bodies on the field + Unit tests
 - Added Shapes(Circle, Rect, Composite) + unit tests for them 
+- Added EventType, TriggerEvents, TriggerEventBuffer & Trigger2D + Unit tests
+- Added TriggerManager as manager for all triggers on the field + unit tests

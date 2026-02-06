@@ -9,6 +9,7 @@ namespace PanicEngine.Core
     public sealed class FieldManager
     {
         public BodiesManager BodiesManager { get; }
+        public TriggerManager TriggerManager { get; }
         public FieldBounds FieldBounds { get; }
 
         public PhysixSettings Settings { get; set; } = new();
@@ -24,6 +25,7 @@ namespace PanicEngine.Core
             }
 
             BodiesManager = new BodiesManager();
+            TriggerManager = new TriggerManager();
         }
 
         public FieldManager(FieldBounds fieldBounds, BodiesManager bodiesManager) : this(fieldBounds)
@@ -34,6 +36,17 @@ namespace PanicEngine.Core
                 throw new ArgumentNullException(nameof(bodiesManager));
             }
             BodiesManager = bodiesManager;
+            TriggerManager = new TriggerManager();
+        }
+
+        public FieldManager(FieldBounds fieldBounds, BodiesManager bodiesManager, TriggerManager triggerManager) : this(fieldBounds, bodiesManager)
+        {
+            if(triggerManager == null)
+            {
+                PanicLogger.Error("Trigger manager is null");
+                throw new ArgumentNullException(nameof(triggerManager));
+            }
+            TriggerManager = triggerManager;
         }
 
         // ------------------------
@@ -47,6 +60,8 @@ namespace PanicEngine.Core
             BodiesManager.LimitVelocity(Settings);
             BodiesManager.UpdateBodies(deltaTime);
             SolveCollisions();
+
+            TriggerManager.Update(BodiesManager.Bodies);
         }
 
         private void SolveCollisions()

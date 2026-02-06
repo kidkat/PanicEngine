@@ -1,6 +1,6 @@
 namespace PanicEngine.Maths.Shapes
 {
-    public class Rect2D : IShape2D
+    public sealed class Rect2D : IShape2D
     {
         public float MinX { get; }
         public float MinY { get; }
@@ -17,10 +17,10 @@ namespace PanicEngine.Maths.Shapes
 
         public bool Contains(Vector2D point)
         {
-            return point.X >= MinX 
-                && point.X <= MaxX 
-                && point.Y >= MinY 
-                && point.Y <= MaxY;
+            return point.X >= MinX &&
+                point.X <= MaxX &&
+                point.Y >= MinY &&
+                point.Y <= MaxY;
         }
 
         public bool Overlaps(Vector2D point, float radius)
