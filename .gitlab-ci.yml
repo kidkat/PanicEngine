@@ -1,0 +1,30 @@
+stages:
+  - build
+  - test
+
+variables:
+  DOTNET_VERSION: 10.0.0
+
+.dotnet_template: &dotnet_template
+  image: mcr.microsoft.com/dotnet/sdk:10.0
+  before_script:
+    - dotnet restore
+
+build:
+  <<: *dotnet_template
+  stage: build
+  script:
+    - dotnet build PanicEngine.sln --configuration Release --no-restore
+  artifacts:
+    paths:
+      - src/PanicEngine/bin/
+      - tests/PanicEngine.Tests/bin/
+
+test:
+  <<: *dotnet_template
+  stage: test
+  script:
+    - dotnet build PanicEngine.sln --configuration Release --no-restore
+    - dotnet test PanicEngine.sln --configuration Release --no-build --verbosity normal
+  needs:
+    - build
