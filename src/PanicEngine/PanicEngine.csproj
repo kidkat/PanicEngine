@@ -13,8 +13,11 @@
     <Company>kidkat</Company>
     <Description>PanicEngine - A physics engine library</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/kidkat/PanicEngine</RepositoryUrl>
+    <!-- <RepositoryUrl>https://github.com/kidkat/PanicEngine</RepositoryUrl> -->
     <PackageTags>physics;unity;game-engine</PackageTags>
+    <PackageId>PanicEngine</PackageId>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)../../out</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
