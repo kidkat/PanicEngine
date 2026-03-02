@@ -1,0 +1,23 @@
+# Build output
+bin/
+obj/
+src/PanicEngine/bin/
+src/PanicEngine/obj/
+tests/PanicEngine.Tests/bin/
+tests/PanicEngine.Tests/obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# NuGet
+*.nupkg
+*.snupkg
+project.lock.json
+
+# OS
+.DS_Store
+Thumbs.db

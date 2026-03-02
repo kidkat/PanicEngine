@@ -66,6 +66,13 @@ namespace PanicEngine.Core
             _bodies.Clear();
             PanicLogger.Info("All bodies cleared");
         }
+        public bool AllBodiesSleeping(){
+            foreach(var body in _bodies)
+                if(!body.IsSleeping)
+                    return false;
+
+            return true;
+        }
 
         public void LimitVelocity(PhysixSettings settings)
         {

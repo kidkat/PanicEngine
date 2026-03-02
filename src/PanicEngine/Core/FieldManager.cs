@@ -64,6 +64,27 @@ namespace PanicEngine.Core
             TriggerManager.Update(BodiesManager.Bodies);
         }
 
+        /// <summary>
+        /// Запускает симуляцию до момента, пока все тела не остановятся (IsSleeping)
+        /// или не будет достигнут лимит шагов (защита от бесконечного цикла).
+        /// </summary>
+        public int SimulateUntilRest(float fixedDeltaTime, int maxSteps = 2000)
+        {
+            if (fixedDeltaTime <= 0f) return 0;
+            
+            int steps = 0;
+            while (steps < maxSteps)
+            {
+                if (BodiesManager.AllBodiesSleeping())
+                    break;
+                    
+                Step(fixedDeltaTime);
+                steps++;
+            }
+            
+            return steps;
+        }
+
         private void SolveCollisions()
         {
             int iterations = Settings.SolverIterations;
