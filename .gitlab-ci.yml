@@ -27,7 +27,7 @@ test:
 
 publish:
   image: mcr.microsoft.com/dotnet/sdk:10.0
-  stage: publish
+  stage: package
   script:
     - dotnet pack src/PanicEngine/PanicEngine.csproj -c Release -o out
     - dotnet nuget add source "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/nuget/index.json"
