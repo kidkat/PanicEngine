@@ -9,7 +9,6 @@ namespace PanicEngine.Core
     public sealed class FieldManager
     {
         public BodiesManager BodiesManager { get; }
-        // public TriggerManager TriggerManager { get; }
         public FieldBounds FieldBounds { get; }
 
         public PhysixSettings Settings { get; set; } = new();
@@ -25,7 +24,6 @@ namespace PanicEngine.Core
             }
 
             BodiesManager = new BodiesManager();
-            // TriggerManager = new TriggerManager();
         }
 
         public FieldManager(FieldBounds fieldBounds, BodiesManager bodiesManager) : this(fieldBounds)
@@ -36,7 +34,6 @@ namespace PanicEngine.Core
                 throw new ArgumentNullException(nameof(bodiesManager));
             }
             BodiesManager = bodiesManager;
-            // TriggerManager = new TriggerManager();
         }
 
         public FieldManager(FieldBounds fieldBounds, BodiesManager bodiesManager, TriggerManager triggerManager) : this(fieldBounds, bodiesManager)
@@ -46,12 +43,12 @@ namespace PanicEngine.Core
                 PanicLogger.Error("Trigger manager is null");
                 throw new ArgumentNullException(nameof(triggerManager));
             }
-            // TriggerManager = triggerManager;
         }
 
-        // ------------------------
-        // Шаг симуляции
-        // ------------------------
+        // <summary>
+        // Runs the simulation step
+        // <param name="deltaTime">The time step</param>
+        // </summary>
         public void Step(float deltaTime)
         {
             PanicLogger.Debug($"Stepping with deltaTime: {deltaTime}");
@@ -60,13 +57,13 @@ namespace PanicEngine.Core
             BodiesManager.LimitVelocity(Settings);
             BodiesManager.UpdateBodies(deltaTime);
             SolveCollisions();
-
-            // TriggerManager.Update(BodiesManager.Bodies);
         }
 
         /// <summary>
-        /// Запускает симуляцию до момента, пока все тела не остановятся (IsSleeping)
-        /// или не будет достигнут лимит шагов (защита от бесконечного цикла).
+        /// Runs the simulation until all bodies are sleeping
+        /// <param name="fixedDeltaTime">The time step</param>
+        /// <param name="maxSteps">The maximum number of steps</param>
+        /// <returns>The number of steps</returns>
         /// </summary>
         public int SimulateUntilRest(float fixedDeltaTime, int maxSteps = 2000)
         {
