@@ -1,6 +1,7 @@
 using Xunit;
 using Xunit.Abstractions;
 using PanicEngine.Maths;
+using PanicEngine.Maths.Shapes;
 using PanicEngine.Physix;
 using System;
 
@@ -17,7 +18,7 @@ namespace PanicEngine.Tests.Physix
             body.IsStatic = true;   
             body.Position = new Vector2D(-10, -10); //out of bounds
             body.Velocity = new Vector2D(5, 5);
-            var fieldBounds = new FieldBounds(-5, -5, 5, 5);
+            var fieldBounds = new FieldBounds(new Rect2D(-5, -5, 5, 5));
             var originalPosition = body.Position;
             var originalVelocity = body.Velocity;
 
@@ -33,7 +34,7 @@ namespace PanicEngine.Tests.Physix
             var body = new Body2D(1, new Vector2D(0, 0), 1f, 0.5f);
             body.Position = new Vector2D(0, 0);
             body.Velocity = new Vector2D(2, 2);
-            var fieldBounds = new FieldBounds(-5, -5, 5, 5);
+            var fieldBounds = new FieldBounds(new Rect2D(-5, -5, 5, 5));
             var originalPosition = body.Position;
             var originalVelocity = body.Velocity;
 
@@ -50,7 +51,7 @@ namespace PanicEngine.Tests.Physix
             body.Position = new Vector2D(-6, 0); //left of left border (-5 + 1 = -4)
             body.Velocity = new Vector2D(-2, 0); //moving left
             body.Restitution = 0.8f;
-            var fieldBounds = new FieldBounds(-5, -5, 5, 5);
+            var fieldBounds = new FieldBounds(new Rect2D(-5, -5, 5, 5));
 
             Collision2D.ResolveWallCollision(body, fieldBounds);
 
@@ -70,7 +71,7 @@ namespace PanicEngine.Tests.Physix
             body.Position = new Vector2D(6, 0); //right of right border (5 - 1 = 4)
             body.Velocity = new Vector2D(2, 0); //moving right
             body.Restitution = 0.6f;
-            var fieldBounds = new FieldBounds(-5, -5, 5, 5);
+            var fieldBounds = new FieldBounds(new Rect2D(-5, -5, 5, 5));
 
             Collision2D.ResolveWallCollision(body, fieldBounds);
 
@@ -90,7 +91,7 @@ namespace PanicEngine.Tests.Physix
             body.Position = new Vector2D(0, 6); //below bottom border (5 - 1 = 4)
             body.Velocity = new Vector2D(0, 2); //moving down
             body.Restitution = 1f; //full restitution
-            var fieldBounds = new FieldBounds(-5, -5, 5, 5);
+            var fieldBounds = new FieldBounds(new Rect2D(-5, -5, 5, 5));
 
             Collision2D.ResolveWallCollision(body, fieldBounds);
 
@@ -107,7 +108,7 @@ namespace PanicEngine.Tests.Physix
             body.Position = new Vector2D(0, -6); //above top border (-5 + 1 = -4)
             body.Velocity = new Vector2D(0, -2); //moving up
             body.Restitution = 0.5f;
-            var fieldBounds = new FieldBounds(-5, -5, 5, 5);
+            var fieldBounds = new FieldBounds(new Rect2D(-5, -5, 5, 5));
 
             Collision2D.ResolveWallCollision(body, fieldBounds);
 
@@ -127,7 +128,7 @@ namespace PanicEngine.Tests.Physix
             body.Position = new Vector2D(-6, -6); //left top corner
             body.Velocity = new Vector2D(-2, -2);
             body.Restitution = 0.8f;
-            var fieldBounds = new FieldBounds(-5, -5, 5, 5);
+            var fieldBounds = new FieldBounds(new Rect2D(-5, -5, 5, 5));
 
             Collision2D.ResolveWallCollision(body, fieldBounds);
 
@@ -148,7 +149,7 @@ namespace PanicEngine.Tests.Physix
             body.Position = new Vector2D(6, 6); //right bottom corner
             body.Velocity = new Vector2D(2, 2);
             body.Restitution = 0.6f;
-            var fieldBounds = new FieldBounds(-5, -5, 5, 5);
+            var fieldBounds = new FieldBounds(new Rect2D(-5, -5, 5, 5));
 
             Collision2D.ResolveWallCollision(body, fieldBounds);
 
@@ -166,7 +167,7 @@ namespace PanicEngine.Tests.Physix
             body.Position = new Vector2D(-6, 0);
             body.Velocity = new Vector2D(-2, 0);
             body.Restitution = 0f; //no restitution
-            var fieldBounds = new FieldBounds(-5, -5, 5, 5);
+            var fieldBounds = new FieldBounds(new Rect2D(-5, -5, 5, 5));
 
             Collision2D.ResolveWallCollision(body, fieldBounds);
 
@@ -184,7 +185,7 @@ namespace PanicEngine.Tests.Physix
             body.Position = new Vector2D(-6, 0);
             body.Velocity = new Vector2D(-1, 1); //diagonal velocity
             body.Restitution = 1f;
-            var fieldBounds = new FieldBounds(-5, -5, 5, 5);
+            var fieldBounds = new FieldBounds(new Rect2D(-5, -5, 5, 5));
 
             Collision2D.ResolveWallCollision(body, fieldBounds);
 
@@ -203,7 +204,7 @@ namespace PanicEngine.Tests.Physix
             body.Position = new Vector2D(-8, 0); //should be left of border (-5 + 2 = -3)
             body.Velocity = new Vector2D(-2, 0);
             body.Restitution = 0.8f;
-            var fieldBounds = new FieldBounds(-5, -5, 5, 5);
+            var fieldBounds = new FieldBounds(new Rect2D(-5, -5, 5, 5));
 
             Collision2D.ResolveWallCollision(body, fieldBounds);
 
@@ -218,7 +219,7 @@ namespace PanicEngine.Tests.Physix
             body.Position = new Vector2D(-4, 0); //exactly on left border (-5 + 1 = -4)
             body.Velocity = new Vector2D(-2, 0);
             body.Restitution = 0.8f;
-            var fieldBounds = new FieldBounds(-5, -5, 5, 5);
+            var fieldBounds = new FieldBounds(new Rect2D(-5, -5, 5, 5));
             var originalPosition = body.Position;
             var originalVelocity = body.Velocity;
 
@@ -236,7 +237,7 @@ namespace PanicEngine.Tests.Physix
             body.Position = new Vector2D(-6, -6); //outside all borders
             body.Velocity = new Vector2D(-1, -1);
             body.Restitution = 0.7f;
-            var fieldBounds = new FieldBounds(-5, -5, 5, 5);
+            var fieldBounds = new FieldBounds(new Rect2D(-5, -5, 5, 5));
 
             Collision2D.ResolveWallCollision(body, fieldBounds);
 
@@ -253,7 +254,7 @@ namespace PanicEngine.Tests.Physix
             body.Position = new Vector2D(-6, 0);
             body.Velocity = new Vector2D(0, 3); //only vertical component
             body.Restitution = 1f;
-            var fieldBounds = new FieldBounds(-5, -5, 5, 5);
+            var fieldBounds = new FieldBounds(new Rect2D(-5, -5, 5, 5));
 
             Collision2D.ResolveWallCollision(body, fieldBounds);
 
@@ -272,7 +273,7 @@ namespace PanicEngine.Tests.Physix
             body.Position = new Vector2D(6, 0); //right of border
             body.Velocity = new Vector2D(-2, 0); //moving left (from wall)
             body.Restitution = 0.8f;
-            var fieldBounds = new FieldBounds(-5, -5, 5, 5);
+            var fieldBounds = new FieldBounds(new Rect2D(-5, -5, 5, 5));
 
             Collision2D.ResolveWallCollision(body, fieldBounds);
 

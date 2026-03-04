@@ -1,27 +1,23 @@
+using PanicEngine.Maths.Shapes;
+
 namespace PanicEngine.Maths
 {
     public readonly struct FieldBounds
     {
-        public readonly float MinX { get; }
-        public readonly float MinY { get; }
-        public readonly float MaxX { get; }
-        public readonly float MaxY { get; }
+        public readonly Rect2D Rect { get; }
 
-        public FieldBounds(float minX, float minY, float maxX, float maxY)
+        public FieldBounds(Rect2D rect)
         {
-            MinX = minX;
-            MinY = minY;
-            MaxX = maxX;
-            MaxY = maxY;
+            Rect = rect;
         }
 
-        public float Width => MaxX - MinX;
-        public float Height => MaxY - MinY;
+        public float Width => Rect.MaxX - Rect.MinX;
+        public float Height => Rect.MaxY - Rect.MinY;
 
         public FieldBounds Normalized()
         {
-            float minX = MinX, maxX = MaxX;
-            float minY = MinY, maxY = MaxY;
+            float minX = Rect.MinX, maxX = Rect.MaxX;
+            float minY = Rect.MinY, maxY = Rect.MaxY;
 
             if(minX > maxX)
                 (maxX, minX) = (minX, maxX);
@@ -29,7 +25,7 @@ namespace PanicEngine.Maths
             if (minY > maxY)
                 (maxY, minY) = (minY, maxY);
 
-            return new FieldBounds(minX, minY, maxX, maxY);
+            return new FieldBounds(new Rect2D(minX, minY, maxX, maxY));
         }
     }
 }

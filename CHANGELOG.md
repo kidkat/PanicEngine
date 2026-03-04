@@ -18,3 +18,7 @@ All notable changes to this project will be documented in this file.
 - Added Shapes(Circle, Rect, Composite) + unit tests for them 
 - Added EventType, TriggerEvents, TriggerEventBuffer & Trigger2D + Unit tests
 - Added TriggerManager as manager for all triggers on the field + unit tests
+
+## [0.0.2]
+### Added
+- Added BodyStateSnapshot to give results back to game-server

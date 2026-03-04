@@ -4,7 +4,7 @@ namespace PanicEngine.Maths.Shapes
 {
     public sealed class Composite2D : IShape2D
     {
-        private readonly List<IShape2D> _shapes = new();
+        private readonly List<IShape2D> _shapes;
 
         public Composite2D(List<IShape2D> shapes)
         {
@@ -13,7 +13,9 @@ namespace PanicEngine.Maths.Shapes
 
         public Composite2D(params IShape2D[] shapes)
         {
-            _shapes.AddRange(shapes ?? []);
+            _shapes = new List<IShape2D>();
+            if (shapes != null)
+                _shapes.AddRange(shapes);
         }
 
         public void AddShape(IShape2D shape)

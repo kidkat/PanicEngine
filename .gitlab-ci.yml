@@ -1,6 +1,6 @@
 stages:
   - test
-  - package
+  - publish
 
 variables:
   NUGET_PACKAGES: $CI_PROJECT_DIR/.nuget/packages
@@ -27,7 +27,9 @@ test:
 
 publish:
   image: mcr.microsoft.com/dotnet/sdk:10.0
-  stage: package
+  stage: publish
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
   script:
     - dotnet pack src/PanicEngine/PanicEngine.csproj -c Release -o out
     - dotnet nuget add source "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/nuget/index.json"

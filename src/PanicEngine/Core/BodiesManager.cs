@@ -4,6 +4,7 @@ using PanicEngine.Physix;
 using PanicEngine.Logger;
 using System.Collections.Generic;
 using System;
+using PanicEngine.Snapshots;
 
 namespace PanicEngine.Core
 {
@@ -72,6 +73,15 @@ namespace PanicEngine.Core
                     return false;
 
             return true;
+        }
+
+        public IReadOnlyList<BodyStateSnapshot> GetBodyStateSnapshots()
+        {
+            var list = new List<BodyStateSnapshot>(_bodies.Count);
+            foreach(var body in _bodies)
+                list.Add(BodyStateSnapshot.GetSnapshot(body));
+
+            return list;
         }
 
         public void LimitVelocity(PhysixSettings settings)

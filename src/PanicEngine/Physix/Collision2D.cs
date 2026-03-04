@@ -17,10 +17,10 @@ namespace PanicEngine.Physix
             float restitution = body.Restitution;
             PanicLogger.Debug($"Resolving wall collision for body {body.Id} with position: {position} and velocity: {velocity} and restitution: {restitution}");
 
-            float leftBorder = fieldBounds.MinX + body.Radius; 
-            float rightBorder = fieldBounds.MaxX - body.Radius;
-            float topBorder = fieldBounds.MinY + body.Radius;
-            float bottomBorder = fieldBounds.MaxY - body.Radius;
+            float leftBorder = fieldBounds.Rect.MinX + body.Radius; 
+            float rightBorder = fieldBounds.Rect.MaxX - body.Radius;
+            float topBorder = fieldBounds.Rect.MinY + body.Radius;
+            float bottomBorder = fieldBounds.Rect.MaxY - body.Radius;
             
             if(position.X < leftBorder)
             {
